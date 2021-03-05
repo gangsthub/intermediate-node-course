@@ -59,7 +59,36 @@ app
   })
   // UPDATE
   .put((req, res) => {
-    // User.findByIdAndUpdate()
+    const { newData } = req.body
+    User.findByIdAndUpdate(
+      req.params.id,
+      {
+        name: newData && newData.name,
+        email: newData && newData.email,
+        password: newData && newData.password,
+      },
+      {
+        new: true,
+      },
+      (err, data) => {
+        if (err) {
+          res.json({
+            success: false,
+            message: err,
+          })
+        } else if (!data) {
+          res.json({
+            success: false,
+            message: 'Not Found',
+          })
+        } else {
+          res.json({
+            success: true,
+            data: data,
+          })
+        }
+      }
+    )
   })
   // DELETE
   .delete((req, res) => {
